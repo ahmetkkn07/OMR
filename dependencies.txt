@@ -1,0 +1,7 @@
+flask
+imutils
+numpy
+opencv-python
+scipy
+pytesseract
+flask_fontawesome

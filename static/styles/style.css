@@ -1,0 +1,95 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+    /* font-family: "Source Sans Pro", sans-serif; */
+    font-family: "Montserrat", sans-serif;
+}
+.content {
+    min-height: 100%;
+}
+.btn-group {
+    width: 100%;
+}
+.br-50px {
+    border-radius: 50px !important;
+}
+.v-align-center {
+    vertical-align: middle !important;
+}
+.max-width-100px {
+    max-width: 100px;
+}
+.q-button {
+    display: block !important;
+    width: 100%;
+}
+.q-photo {
+    /* border-style: double; */
+    max-width: 60%;
+}
+/* imagePreview */
+.imagePreview {
+    width: 100%;
+    height: 600px;
+    background: url();
+    background-color: #e9ecef;
+    border-radius: 1em;
+    border: #e9ecef solid 5px;
+    background-size: cover;
+    /* background-size: 100%; */
+    background-repeat: no-repeat;
+    background-position: center 50px;
+    box-shadow: 0px 5px 6px 8px rgba(0, 0, 0, 0.2);
+}
+.badge-pill {
+    border-radius: 1rem;
+    padding: 6px 20px;
+    font-size: 15px;
+}
+.badge-success {
+    background-color: #1de9b6;
+    color: #000000;
+}
+.badge-danger {
+    background-color: #e57373;
+    color: #000000;
+}
+.badge-primary {
+    background-color: #90caf9;
+    color: #000000;
+}
+input[type="file"] {
+    cursor: pointer;
+}
+.btn {
+    border-radius: 0.7em;
+}
+.btn-gray {
+    background-color: #333a3f;
+    color: #eeeeee;
+}
+.btn-gray:hover {
+    background-color: #444b4f;
+    color: #ffffff;
+}
+thead {
+    background-color: #333a3f;
+    color: #ffffff;
+    border-radius: 10px;
+}
+table {
+    /* display: inline-block;
+    width: 100%; */
+    border: #333a3f solid 1px;
+    /* border-collapse: collapse; */
+    border-radius: 1em;
+    overflow: hidden;
+}
+.jumbotron {
+    border-radius: 1em;
+    /* box-shadow: 0px 0px 6px 6px rgba(0, 0, 0, 0.2); */
+}
+.alert {
+    border-radius: 1em;
+}

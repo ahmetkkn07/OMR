@@ -1,0 +1,36 @@
+{% extends "layout.html" %} {% block body %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-xs-12 text-center">
+            <h2>Cevap Anahtarını Yükleyin</h2>
+            {% with errors = get_flashed_messages(category_filter=["error"]) %}
+            {% if errors %} {%- for err in errors %}
+            <div class="alert alert-danger">{{ err }}</div>
+            {% endfor -%} {% endif %} {% endwith %}
+            <form
+                class="justify-content-between"
+                method="post"
+                action="/uploadAnswerKey"
+                enctype="multipart/form-data"
+            >
+                <div class="imgUp">
+                    <div class="imagePreview" id="preview">
+                        
+                        <input
+                            id="answerKey"
+                            class="uploadFile img choose"
+                            type="file"
+                            name="file"
+                            autocomplete="off"
+                            required
+                        />
+                        <button class="choose btn btn-gray" type="submit">
+                            <i class="fas fa-cloud-upload-alt"></i>&nbsp;Yükle
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

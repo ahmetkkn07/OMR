@@ -1,0 +1,97 @@
+{% extends "layout.html" %} {% block body %}
+<div class="container">
+    <h1>Kullanım</h1>
+    <div class="row text-justify">
+        <div class="col-lg-12 col-xs-12">
+            <h4>Kurallar</h4>
+            <ul>
+                <li>
+                    Yüklenecek fotoğraflar aydınlık bir ortamda ve beyaz ışık
+                    altında çekilmelidir.
+                </li>
+                <li>
+                    Fotoğrafın çerçevesi içinde yalnızca indirdiğiniz dosya
+                    bulunmalıdır.
+                </li>
+                <li>
+                    Fotoğraflardaki kirlilik veya yanlış ışıklandırma sebeiyle
+                    oluşabilecek yanlış sonuçların sorumluluğu size aittir.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row text-justify">
+        <div class="col-lg-6 col-xs-12">
+            <h4>Örnek Cevap Kağıdı</h4>
+            <img
+                class="img-fluid q-photo"
+                src="/static/images/example.jpg"
+                alt="Örnek Cevap Kağıdı"
+            />
+            
+        </div>
+    </div>
+    <br>
+    <h4>Boş Cevap Kağıtları</h4>
+    <div class="row justify-content-center text-justify">
+        <div class="col-lg-4 col-xs-12">
+            <p>
+                İstediğiniz fotoğrafın üzerine tıkladığınızda indirme
+                başlayacaktır.
+            </p>
+            <button
+                type="button"
+                class="btn btn-gray q-button"
+                onclick="changeImage('/static/images/emptysheets/5question.jpg');"
+            >
+                5 Soru
+            </button>
+            <br />
+            <button
+                type="button"
+                class="btn btn-gray q-button"
+                onclick="changeImage('/static/images/emptysheets/10question.jpg');"
+            >
+                10 Soru
+            </button>
+            <br />
+            <button
+                type="button"
+                class="btn btn-gray q-button"
+                onclick="changeImage('/static/images/emptysheets/15question.jpg');"
+            >
+                15 Soru
+            </button>
+            <br />
+            <button
+                type="button"
+                class="btn btn-gray q-button"
+                onclick="changeImage('/static/images/emptysheets/20question.jpg');"
+            >
+                20 Soru
+            </button>
+        </div>
+        <div class="col-lg-2 col-xs-12"></div>
+        <div class="col-lg-6 col-xs-12 justify-content-center">
+            <a id="link" href="/static/images/emptysheets/5question.jpg" download=>
+            <img
+                class="img-fluid q-photo"
+                id="image"
+                src="/static/images/emptysheets/5question.jpg"
+                alt="Boş Anahtar"
+            />
+            </a>
+        </div>
+    </div>
+    <br />
+</div>
+<script>
+    function changeImage(newsrc) {
+        var img = document.getElementById("image");
+        var link = document.getElementById("link");
+        img.src = newsrc;
+        link.href = newsrc;
+        return false;
+    }
+</script>
+{% endblock %}

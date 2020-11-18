@@ -1,0 +1,133 @@
+{% extends "layout.html" %} {% block body %}
+
+<div class="container">
+    <div class="jumbotron text-center">
+        <h1>Optik İşaret Tanıma</h1>
+        <p class="lead">Ahmet KÖKEN</p>
+        <a class="btn btn-lg btn-gray" href="uploadAnswerKey" role="button"
+            >Kullanmaya Başla</a
+        >
+    </div>
+    <div class="row text-justify">
+        <div class="col-lg-6 col-xs-12">
+            <h2>Kullanılan Kütüphaneler</h2>
+            <div class="row">
+                <div class="col-lg-3 col-xs-3">
+                    <br />
+                    <img
+                        src="/static/images/opencv.png"
+                        class="img-fluid"
+                        alt="OpenCV Logo"
+                    />
+                </div>
+                <div class="col-lg-9 col-xs-9">
+                    <h4>OpenCV</h4>
+                    <p>
+                        OpenCV (Open Source Computer Vision), açık kaynak kodlu
+                        görüntü işleme kütüphanesidir. 1999 yılında Intel
+                        tarafından geliştirilmeye başlanmış daha sonra Itseez,
+                        Willow, Nvidia, AMD, Google gibi şirket ve toplulukların
+                        desteği ile gelişim süreci devam etmektedir.
+                    </p>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-lg-3 col-xs-3">
+                    <br /><br />
+                    <img
+                        src="/static/images/tesseract.png"
+                        class="img-fluid"
+                        alt="Tesseract OCR Logo"
+                    />
+                </div>
+                <div class="col-lg-9 col-xs-9">
+                    <h4>Tesseract OCR</h4>
+                    <p>
+                        Tesseract, unicode desteği olan ve standart haliyle
+                        100'den fazla dili tanıyabilen ve diğer dilleri tanımak
+                        için eğitilebilen bir OCR (Optical Character
+                        Recognition) motorudur. Google tarafından Gmail
+                        eklerindeki resimlerde ve YouTube videolarında spam
+                        aramak amacıyla kullanılmaktadır.
+                    </p>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-lg-3 col-xs-3">
+                    <img
+                        src="/static/images/flask.png"
+                        class="img-fluid"
+                        alt="Flask Logo"
+                    />
+                </div>
+                <div class="col-lg-9 col-xs-9">
+                    <h4>Flask</h4>
+                    <p>
+                        Flask, web uygulamaları geliştirmeyi sağlayan, Werkzueg
+                        ve Jinja tabanlı bir Python microframework’üdür. Sadece
+                        temel özellikleri içerir ancak istenildiğinde paketler
+                        yardımıyla genişletilebilir.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-xs-12">
+            <h2>Algoritma</h2>
+            <ol>
+                <li>Kullanıcı resimleri yükler.</li>
+                <li>
+                    Her bir resim için; OpenCV ile görüntü işlenerek önce gri
+                    tonlamalı hale getirilir.
+                </li>
+                <li>OpenCV ile 5x5 Gauss uygulanır.</li>
+                <li>
+                    OpenCV yardımıyla Canny kenar bulma algoritması uygulanır.
+                </li>
+                <li>
+                    Dört kenarı olan şekil seçilir ve içinde yazan ad soyad
+                    bilgisi, Tesseract yardımıyla tanınır ve ad soyad elde
+                    edilir.
+                </li>
+                <li>
+                    Gri resim üzerinde bir eşik değeri uygulanır ve resim
+                    negatife çevrilir. Bu sayede işaretli alanlar beyaz piksel,
+                    işaretsiz alanlar siyah piksel haline gelir.
+                </li>
+                <li>
+                    imutils yardımıyla tüm şekiller alınır ve her şekil için
+                    kapsayıcı dörtgenin en/boy oranı hesaplanır.
+                </li>
+                <li>
+                    En/boy oranı yaklaşık 1 olan şekiller bir diziye atılır.
+                    (Çemberin kapsayıcı dörtgeni karedir ve karenin en/boy oranı
+                    1'dir.)
+                </li>
+                <li>
+                    Elde edilen tüm çemberlerin çevresinin ortalaması alınır.
+                    Ortalama çevre ile ortalama dairenin alanı hesaplanır.
+                </li>
+                <li>
+                    Çemberler beşli gruplar halinde gezilerek içindeki sıfırdan
+                    (siyahtan) farklı piksel sayısı ortalama dairenin alanının
+                    yarısından fazla ise bu şık işaretli olarak belirlenir.
+                </li>
+                <li>
+                    Her bir soru; eğer işaretli şık sayısı birden farklı ise
+                    yanlış olarak işaretlenir, bir tane ise cevap anahtarı ile
+                    karşılaştırılır ve sonuca göre işlem yapılır.
+                </li>
+                <li>
+                    Sorunun doğru, boş veya yanlış olmasına göre renk belirlenir
+                    ve cevaplar görüntü üzerinde işaretlenir ve diske
+                    kaydedilir.
+                </li>
+                <li>Puanlar ve kağıtlar gösterilir.</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

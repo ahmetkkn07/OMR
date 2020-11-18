@@ -1,0 +1,59 @@
+{% extends "layout.html" %} {% block body %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-xs-12 text-center justify-content-center">
+            <h2>Sınav Kağıtlarını Yükleyin</h2>
+            <form
+                method="post"
+                action="/uploadPapers"
+                enctype="multipart/form-data"
+            >
+               
+                <input
+                    id="papers"
+                    type="file"
+                    name="files[]"
+                    multiple="true"
+                    autocomplete="off"
+                    required
+                />
+                <button class="btn btn-gray" type="submit">
+                    <i class="fas fa-cloud-upload-alt"></i>&nbsp;Yükle
+                </button>
+            </form>
+            <br />
+            {% with messages = get_flashed_messages(category_filter=["success"])
+            %} {% if messages %} {% for message in messages %}
+            <div class="alert alert-success">
+                <strong>Başarılı!&nbsp;</strong>{{message}}
+            </div>
+            {% endfor %} {% endif %} {% endwith %} {% with messages =
+            get_flashed_messages(category_filter=["error"]) %} {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-danger">
+                <strong>Hata!&nbsp;</strong>{{message}}
+            </div>
+            {% endfor -%} {% endif %} {% endwith %}
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-lg-3 col-xs-6 justify-content-center">
+            <table class="table table-hover text-center">
+                <thead>
+                    <tr>
+                        <th colspan="2">Cevap Anahtarı</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for ans in answer_key%}
+                    <tr>
+                        <th>{{loop.index0+1}}</th>
+                        <td>{{ans}}</td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
