@@ -10,13 +10,7 @@ OMR, anketler ve testler gibi belge formlarından insan tarafından işaretlenmi
 3. Windows üzerinde çalışıyorsanız **pytesseract.pytesseract.tesseract_cmd** değişkenini tesseract.exe'nin bulunduğu yol ile değiştirin; Eğer macOS veya Linux üzerinde çalışıyorsanız, bu satırı yoruma alın veya silin.
 4. Gerekli pypi paketlerini, aşağıdaki komutları bir terminalde sırayla çalıştırarak kurun.
   ```
-  pip install flask
-  pip install imutils
-  pip install numpy
-  pip install opencv-python
-  pip install scipy
-  pip install pytesseract
-  pip install flask_fontawesome
+  pip install requirements.txt
   ```
 ## Nasıl Çalışır
 Ön koşulları tamamladıktan sonra repository'yi indirin veya klonlayın, klasörde terminali açın ve aşağıdaki komutu çalıştırın.
