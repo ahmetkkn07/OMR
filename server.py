@@ -2,9 +2,9 @@ import os
 from flask import Flask, session, flash, request, redirect, render_template
 from werkzeug.utils import secure_filename
 import time
-import omr_v8 as omr
 import shutil
 from flask_fontawesome import FontAwesome
+import omr
 
 app = Flask(__name__)
 fa = FontAwesome(app)

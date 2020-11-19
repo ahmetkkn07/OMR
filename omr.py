@@ -26,7 +26,7 @@ scoreLoc = (20, 20)
 
 font = cv2.FONT_HERSHEY_SIMPLEX
 
-# pytesseract.pytesseract.tesseract_cmd = 'C:\Program Files\Tesseract-OCR\\tesseract.exe'
+pytesseract.pytesseract.tesseract_cmd = 'C:\Program Files\Tesseract-OCR\\tesseract.exe'
 
 
 def getAnswers(img):
@@ -36,8 +36,6 @@ def getAnswers(img):
     blurred = cv2.GaussianBlur(gray, (5, 5), 0)
     edged = cv2.Canny(blurred, 75, 200)
 
-    #! RETR_EXTERNAL: sadece en dıştaki kenarları almak için
-    #! CHAIN_APPROX_SIMPLE: yalnızca uç noktaları bırakır, örneğin dikdörtgen için 4 nokta
     cnts = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL,
                             cv2.CHAIN_APPROX_SIMPLE)
 
@@ -68,8 +66,6 @@ def getAnswers(img):
 
     meanCircleArea = stats.mean(circleAreas)
 
-    #! qNum --> 0,1,2,3,4 soru sayısı
-    #! i --> 0,5,10,15,20 kutucuk sayısı
     for (qNum, i) in enumerate(np.arange(0, len(questionCnts), 5)):
         bubbledCount = 0
 
@@ -77,8 +73,7 @@ def getAnswers(img):
             questionCnts[i:i + 5], method="left-to-right")[0]
 
         bubbled = None
-        #! j --> indeks değerleri
-        #! cnt --> her bir kutucuk
+
         for (j, cnt) in enumerate(cnts):
             msk = np.zeros(thresh.shape, dtype="uint8")
             cv2.drawContours(msk, [cnt], -1, 255, -1)
@@ -188,8 +183,6 @@ def getScores(img, ANSWER_KEY, UPLOAD_FOLDER):
                 bubbledCount += 1
 
         answer = ANSWER_KEY[qNum]
-        # if answer > 4:
-        #     answer = 0
         color = None
         if bubbledCount == 1:
             if bubbled == answer:
