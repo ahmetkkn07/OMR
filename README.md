@@ -9,13 +9,7 @@ OMR is the process of capturing human-marked data from document forms such as su
 3. If you are on windows, change **pytesseract.pytesseract.tesseract_cmd** variable with your tesseract.exe path; If you are on macOS or Linux, comment or delete this line.
 4. Install pypi packages with running following commands on a terminal
   ```
-  pip install flask
-  pip install imutils
-  pip install numpy
-  pip install opencv-python
-  pip install scipy
-  pip install pytesseract
-  pip install flask_fontawesome
+  pip install -r requirements.txt
   ```
 ## How to run
 After the prerequisites, download or clone repository, locate folder in terminal and run following command
