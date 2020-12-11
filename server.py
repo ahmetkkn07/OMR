@@ -67,29 +67,29 @@ def upload_answer():
 
 @app.route('/uploadAnswerKey', methods=['POST'])
 def uploadAnswerKey():
-    # try:
-    file = request.files.get('file')
-    ANSWER_KEY = list()
-    if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(session['UPLOAD_FOLDER'], filename))
+    try:
+        file = request.files.get('file')
+        ANSWER_KEY = list()
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(session['UPLOAD_FOLDER'], filename))
 
-        ANSWER_KEY = omr.getAnswers(
-            session['UPLOAD_FOLDER'] + '/' + filename)
-        session['ANSWER_KEY'] = ANSWER_KEY
+            ANSWER_KEY = omr.getAnswers(
+                session['UPLOAD_FOLDER'] + '/' + filename)
+            session['ANSWER_KEY'] = ANSWER_KEY
 
-        ANSWERS_STR = ''
-        for ans in ANSWER_KEY:
-            ANSWERS_STR += (ANSWER_LETTERS[ans])
-        session['ANSWERS_STR'] = ANSWERS_STR
-    else:
+            ANSWERS_STR = ''
+            for ans in ANSWER_KEY:
+                ANSWERS_STR += (ANSWER_LETTERS[ans])
+            session['ANSWERS_STR'] = ANSWERS_STR
+        else:
+            deleteUploadDirectory()
+            flash('Yüklediğiniz dosya uzantısı desteklenmemektedir. Desteklenen dosya uzantılarını (.jpg .png .jpeg) kullanınız.', 'error')
+            return redirect(request.url)
+    except:
         deleteUploadDirectory()
-        flash('Yüklediğiniz dosya uzantısı desteklenmemektedir. Desteklenen dosya uzantılarını (.jpg .png .jpeg) kullanınız.', 'error')
+        flash('Yüklediğiniz cevap anahtarı standartlara uygun olmadığı için isteğiniz işlenemiyor. Lütfen standartlara uygun bir cevap anahtarı kullanınız.', 'error')
         return redirect(request.url)
-    # except:
-    #     deleteUploadDirectory()
-    #     flash('Yüklediğiniz cevap anahtarı standartlara uygun olmadığı için isteğiniz işlenemiyor. Lütfen standartlara uygun bir cevap anahtarı kullanınız.', 'error')
-    #     return redirect(request.url)
     flash('Cevap anahtarı başarıyla yüklendi.', 'success')
     return redirect('/uploadPapers')
 
@@ -101,48 +101,47 @@ def upload_form():
 
 @app.route('/uploadPapers', methods=['POST'])
 def uploadPapers():
-    # try:
-    files = request.files.getlist('files[]')
-    SCORES = {}
-    for file in files:
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(session['UPLOAD_FOLDER'], filename))
+    try:
+        files = request.files.getlist('files[]')
+        SCORES = {}
+        for file in files:
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(session['UPLOAD_FOLDER'], filename))
 
-            temp = list()
-            temp.clear()
+                temp = list()
+                temp.clear()
 
-            ANSWERS_STR = ''
-            for ans in omr.getAnswers(
-                    session['UPLOAD_FOLDER'] + '/' + filename):
-                ANSWERS_STR += (ANSWER_LETTERS[ans])
-            temp.append(ANSWERS_STR)
+                ANSWERS_STR = ''
+                for ans in omr.getAnswers(
+                        session['UPLOAD_FOLDER'] + '/' + filename):
+                    ANSWERS_STR += (ANSWER_LETTERS[ans])
+                temp.append(ANSWERS_STR)
 
-            result = omr.getScores(
-                (session['UPLOAD_FOLDER'] + '/' + filename), session['ANSWER_KEY'], session['UPLOAD_FOLDER'])
-            temp.append(result[0])
-            # ad soyad scores[key][2].split('/static')[1]+'/static'
-            temp.append('/static' + (result[1].split('/static')[1]))
-            # print(result[1].split('/static')[1])
-            temp.append(result[3])
-            temp.append(result[4])
-            temp.append(result[5])
+                result = omr.getScores(
+                    (session['UPLOAD_FOLDER'] + '/' + filename), session['ANSWER_KEY'], session['UPLOAD_FOLDER'])
+                temp.append(result[0])
+                print(result[1])
+                temp.append('static' + (result[1].split('static')[1]))
+                temp.append(result[3])
+                temp.append(result[4])
+                temp.append(result[5])
 
-            SCORES[result[2]] = temp
-            """
-                scores[0] = cevap şıkları
-                scores[1] = puan
-                scores[2] = ad soyad img
-                scores[3] = correct
-                scores[4] = wrong
-                scores[5] = empty
-            """
-        else:
-            flash('Yüklediğiniz dosya uzantısı desteklenmemektedir. Desteklenen dosya uzantılarını (.jpg .png .jpeg) kullanınız.', 'error')
-            return redirect(request.url)
-    # except:
-    #     flash('Yüklediğiniz sınav kağıtlarının arasında standartlara uygun olmayanlar bulunduğu için isteğiniz işlenemiyor. Lütfen standartlara uygun kağıtları kullanınız.', 'error')
-    #     return redirect(request.url)
+                SCORES[result[2]] = temp
+                """
+                    scores[0] = cevap şıkları
+                    scores[1] = puan
+                    scores[2] = ad soyad img
+                    scores[3] = correct
+                    scores[4] = wrong
+                    scores[5] = empty
+                """
+            else:
+                flash('Yüklediğiniz dosya uzantısı desteklenmemektedir. Desteklenen dosya uzantılarını (.jpg .png .jpeg) kullanınız.', 'error')
+                return redirect(request.url)
+    except:
+        flash('Yüklediğiniz sınav kağıtlarının arasında standartlara uygun olmayanlar bulunduğu için isteğiniz işlenemiyor. Lütfen standartlara uygun kağıtları kullanınız.', 'error')
+        return redirect(request.url)
     session['SCORES'] = SCORES
     flash('Dosyalar başarıyla yüklendi.', 'success')
     return redirect('/completed')

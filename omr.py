@@ -27,6 +27,14 @@ font = cv2.FONT_HERSHEY_SIMPLEX
 
 
 def getAnswers(img):
+    """Function getAnswers()
+
+    Args:
+        img (string): path of image
+
+    Returns:
+        list: answers of the image
+    """
     ANSWERS = list()
 
     image = cv2.imread(img)
@@ -44,7 +52,7 @@ def getAnswers(img):
     maxArea = 0
     index = 0
     rects = []
-
+    counter = 0
     if len(cnts) > 0:
         cnts = sorted(cnts, key=cv2.contourArea, reverse=True)
         for cnt in cnts:
@@ -134,6 +142,19 @@ def getAnswers(img):
 
 
 def getScores(img, ANSWER_KEY, UPLOAD_FOLDER):
+    """Function getScores()
+
+    Args:
+        img (string): path of the image
+        ANSWER_KEY (list): answer key of the image
+        UPLOAD_FOLDER (string): full string folder under static/uploads/[timestamp]
+
+    Raises:
+        Exception: catches all exception types
+
+    Returns:
+        list: score, image of name field, image of bubbled correct and wrong answers, correct, wrong, empty
+    """
     image = cv2.imread(img)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     blurred = cv2.GaussianBlur(gray, (5, 5), 0)
@@ -268,7 +289,6 @@ def getScores(img, ANSWER_KEY, UPLOAD_FOLDER):
     scoreText = "Puan: {:.2f}".format(score)
     cv2.putText(paper, scoreText, scoreLoc, font, 0.9, redColor, 2)
 
-    # img = UPLOAD_FOLDER + "/" + secure_filename(name) + ".jpg"
     cv2.imwrite(img, paper)
     img = "/static" + \
         img.split('static')[1]
