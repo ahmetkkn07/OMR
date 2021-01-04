@@ -43,7 +43,6 @@ def getAnswers(img):
     thresh = cv2.threshold(
         blurred, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
     edged = cv2.Canny(thresh, 75, 200)
-
     cnts = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL,
                             cv2.CHAIN_APPROX_SIMPLE)
     cnts = imutils.grab_contours(cnts)
@@ -110,7 +109,6 @@ def getAnswers(img):
         center, radius = cv2.minEnclosingCircle(qCnt)
         if radius < (meanRadius / 2) or radius > (meanRadius * 2):
             questionCnts.remove(qCnt)
-    # powered by sametuluerr
 
     for (qNum, i) in enumerate(np.arange(0, len(questionCnts), 5)):
         bubbledCount = 0
@@ -156,6 +154,7 @@ def getScores(img, ANSWER_KEY, UPLOAD_FOLDER):
         list: score, image of name field, image of bubbled correct and wrong answers, correct, wrong, empty
     """
     image = cv2.imread(img)
+
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     blurred = cv2.GaussianBlur(gray, (5, 5), 0)
     thresh = cv2.threshold(
@@ -200,8 +199,7 @@ def getScores(img, ANSWER_KEY, UPLOAD_FOLDER):
     nameField = cv2.medianBlur(nameField, 5)
     nameField = cv2.threshold(
         nameField, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
-    nameImg = img.split(".jpg")[0]+"_name.jpg"
-    cv2.imwrite(nameImg, nameField)
+    nameImg = img.split(".jpg")[0] + "_name.jpg"
 
     # Sonuçları göstermek için
     paper = image
@@ -209,7 +207,6 @@ def getScores(img, ANSWER_KEY, UPLOAD_FOLDER):
     paperTop = paper[:topOfBubbles, :]
     paper = paper[topOfBubbles:, :]
     thresh = thresh[topOfBubbles:, :]
-
     cnts = cv2.findContours(
         thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     cnts = imutils.grab_contours(cnts)
@@ -242,7 +239,6 @@ def getScores(img, ANSWER_KEY, UPLOAD_FOLDER):
         center, radius = cv2.minEnclosingCircle(qCnt)
         if radius < (meanRadius / 2) or radius > (meanRadius * 2):
             questionCnts.remove(qCnt)
-    # powered by sametuluerr
 
     correct = 0
     wrong = 0
@@ -282,6 +278,7 @@ def getScores(img, ANSWER_KEY, UPLOAD_FOLDER):
             color = redColor
         if answer <= 4:
             cv2.drawContours(paper, [cnts[answer]], -1, color, 3)
+            cv2.imwrite(os.getcwd()+"/"+str(qNum)+str(i)+"image.jpg", paper)
 
     constant = 100.0 / len(ANSWER_KEY)
     score = correct * constant
@@ -290,7 +287,9 @@ def getScores(img, ANSWER_KEY, UPLOAD_FOLDER):
     cv2.putText(paper, scoreText, scoreLoc, font, 0.9, redColor, 2)
 
     cv2.imwrite(img, paper)
-    img = "/static" + \
+    img = "static" + \
         img.split('static')[1]
+    nameImg = "static" + \
+        nameImg.split('static')[1]
 
     return ["{: .2f}".format(score), nameImg, img, correct, wrong, empty]

@@ -34,28 +34,6 @@
             <br />
             <div class="row">
                 <div class="col-lg-3 col-xs-3">
-                    <br /><br />
-                    <img
-                        src="/static/images/tesseract.png"
-                        class="img-fluid"
-                        alt="Tesseract OCR Logo"
-                    />
-                </div>
-                <div class="col-lg-9 col-xs-9">
-                    <h4>Tesseract OCR</h4>
-                    <p>
-                        Tesseract, unicode desteği olan ve standart haliyle
-                        100'den fazla dili tanıyabilen ve diğer dilleri tanımak
-                        için eğitilebilen bir OCR (Optical Character
-                        Recognition) motorudur. Google tarafından Gmail
-                        eklerindeki resimlerde ve YouTube videolarında spam
-                        aramak amacıyla kullanılmaktadır.
-                    </p>
-                </div>
-            </div>
-            <br />
-            <div class="row">
-                <div class="col-lg-3 col-xs-3">
                     <img
                         src="/static/images/flask.png"
                         class="img-fluid"
@@ -88,8 +66,7 @@
                 </li>
                 <li>
                     Dört kenarı olan şekil seçilir ve içinde yazan ad soyad
-                    bilgisi, Tesseract yardımıyla tanınır ve ad soyad elde
-                    edilir.
+                    bilgisi olan alan elde edilir ve netleştirilir.
                 </li>
                 <li>
                     Gri resim üzerinde bir eşik değeri uygulanır ve resim
@@ -97,7 +74,7 @@
                     işaretsiz alanlar siyah piksel haline gelir.
                 </li>
                 <li>
-                    imutils yardımıyla tüm şekiller alınır ve her şekil için
+                    Imutils yardımıyla tüm şekiller alınır ve her şekil için
                     kapsayıcı dörtgenin en/boy oranı hesaplanır.
                 </li>
                 <li>
@@ -106,8 +83,13 @@
                     1'dir.)
                 </li>
                 <li>
-                    Elde edilen tüm çemberlerin çevresinin ortalaması alınır.
-                    Ortalama çevre ile ortalama dairenin alanı hesaplanır.
+                    Elde edilen tüm çemberlerin yarıçap ve çevresinin ortalaması
+                    alınır. Ortalama çevre yardımıyla, mümkün olabilecek
+                    ortalama dairenin alanı hesaplanır.
+                </li>
+                <li>
+                    Yarıçapı, ortalama yarıçapın yarısından küçük olanlar ve iki
+                    katından büyük olanların filtrelenmesi işlemi gerçekleşir.
                 </li>
                 <li>
                     Çemberler beşli gruplar halinde gezilerek içindeki sıfırdan
@@ -124,7 +106,7 @@
                     ve cevaplar görüntü üzerinde işaretlenir ve diske
                     kaydedilir.
                 </li>
-                <li>Puanlar ve kağıtlar gösterilir.</li>
+                <li>Puanlar ve kağıtlar kullanıcıya gösterilir.</li>
             </ol>
         </div>
     </div>

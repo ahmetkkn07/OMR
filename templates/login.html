@@ -1,0 +1,18 @@
+{% extends "layout.html" %} {% block body %} {% from "_formhelpers.html" import
+render_field %}
+<div class="container">
+    {% include "includes/success.html" %} {% include "includes/error.html" %}
+
+    <div class="jumbotron text-center">
+        <h1>Giriş</h1>
+        <form method="post">
+            <dl>
+                {{ render_field(form.email) }} {{ render_field(form.password) }}
+            </dl>
+            <p>
+                <input class="btn btn-gray" type="submit" value="Giriş Yap" />
+            </p>
+        </form>
+    </div>
+</div>
+{% endblock %}

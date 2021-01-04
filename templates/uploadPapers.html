@@ -8,7 +8,6 @@
                 action="/uploadPapers"
                 enctype="multipart/form-data"
             >
-               
                 <input
                     id="papers"
                     type="file"
@@ -22,18 +21,8 @@
                 </button>
             </form>
             <br />
-            {% with messages = get_flashed_messages(category_filter=["success"])
-            %} {% if messages %} {% for message in messages %}
-            <div class="alert alert-success">
-                <strong>Başarılı!&nbsp;</strong>{{message}}
-            </div>
-            {% endfor %} {% endif %} {% endwith %} {% with messages =
-            get_flashed_messages(category_filter=["error"]) %} {% if messages %}
-            {% for message in messages %}
-            <div class="alert alert-danger">
-                <strong>Hata!&nbsp;</strong>{{message}}
-            </div>
-            {% endfor -%} {% endif %} {% endwith %}
+            {% include "includes/success.html" %} {% include
+            "includes/error.html" %}
         </div>
     </div>
     <div class="row justify-content-center">

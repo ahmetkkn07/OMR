@@ -1,0 +1,20 @@
+{% extends "layout.html" %} {% block body %} {% from "_formhelpers.html" import
+render_field %}
+<div class="container">
+    {% include "includes/success.html" %} {% include "includes/error.html" %}
+
+    <div class="jumbotron text-center">
+        <h1>Kayıt</h1>
+        <form method="post">
+            <dl>
+                {{ render_field(form.name) }} {{ render_field(form.surname) }}
+                {{ render_field(form.email) }} {{ render_field(form.password) }}
+                {{ render_field(form.confirm) }}
+            </dl>
+            <p>
+                <input class="btn btn-gray" type="submit" value="Kaydol" />
+            </p>
+        </form>
+    </div>
+</div>
+{% endblock %}
