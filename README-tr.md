@@ -6,7 +6,7 @@ OMR, anketler ve testler gibi belge formlarından insan tarafından işaretlenmi
 
 ## Ön Koşullar
 1. [Python](https://www.python.org/) kurulumunu gerçekleştirin.
-2. Gerekli pypi paketlerini, aşağıdaki komutları bir terminalde sırayla çalıştırarak kurun.
+2. Gerekli pypi paketlerini, aşağıdaki komutu bir terminalde çalıştırarak kurun.
   ```
   pip install -r requirements.txt
   ```
