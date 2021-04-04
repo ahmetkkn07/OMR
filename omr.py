@@ -200,7 +200,7 @@ def getScores(img, ANSWER_KEY, UPLOAD_FOLDER):
     nameField = cv2.threshold(
         nameField, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
     nameImg = img.split(".jpg")[0] + "_name.jpg"
-
+    cv2.imwrite(nameImg, nameField)
     # Sonuçları göstermek için
     paper = image
     topOfBubbles = nameRect.reshape(1, 8)[0][5]
