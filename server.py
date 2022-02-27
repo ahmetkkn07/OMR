@@ -1,13 +1,21 @@
-import os
-from flask import Flask, session, flash, request, redirect, render_template, url_for
-from werkzeug.utils import secure_filename
-import time
-import shutil
-from flask_fontawesome import FontAwesome
-import omr
-from wtforms import Form, StringField, PasswordField, validators
-import database as db
 from datetime import datetime
+import database as db
+from wtforms import Form, StringField, PasswordField, validators
+import omr
+from flask_fontawesome import FontAwesome
+import shutil
+import time
+from werkzeug.utils import secure_filename
+import os
+from flask import (
+    Flask,
+    session,
+    flash,
+    request,
+    redirect,
+    render_template,
+    url_for
+)
 
 app = Flask(__name__)
 fa = FontAwesome(app)
@@ -51,6 +59,7 @@ def createUploadDirectory():
 
 def deleteUploadDirectory():
     if 'UPLOAD_FOLDER' in session:
+        print("Deleting directory: " + session['UPLOAD_FOLDER'])
         if os.path.isdir(session['UPLOAD_FOLDER']):
             shutil.rmtree(session['UPLOAD_FOLDER'])
         session['UPLOAD_FOLDER'] = ''
@@ -59,7 +68,8 @@ def deleteUploadDirectory():
 
 
 def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    return '.' in filename and filename.rsplit(
+        '.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 def isLoggedIn():
@@ -93,8 +103,12 @@ def register():
             flash('Kayıt başarılı, giriş yapabilirsiniz', 'success')
             print("Kayıt başarılı")
             return redirect(url_for('login'), code=302)
-        flash('Kayıt yapılamadı, daha önce aynı eposta ile kaydolmadığınızdan emin olun!', 'error')
-    return render_template('register.html', form=form, page='register', login=isLoggedIn())
+        flash(
+            'Kayıt yapılamadı, daha önce aynı eposta ile kaydolmadığınızdan \
+                emin olun!',
+            'error')
+    return render_template(
+        'register.html', form=form, page='register', login=isLoggedIn())
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -109,29 +123,30 @@ def login():
             flash('Başarıyla giriş yaptınız.', 'success')
             return redirect('/')
         flash('Giriş yapılamadı, eposta ve şifrenizi kontrol edin!', 'error')
-    return render_template('login.html', form=form, page='login', login=isLoggedIn())
+    return render_template(
+        'login.html', form=form, page='login', login=isLoggedIn())
 
 
 @app.route('/')
 def run():
     session.pop('_flashes', None)
     if 'UPLOAD_FOLDER' in session:
+        deleteUploadDirectory()
         session.pop('UPLOAD_FOLDER', None)
-    # deleteUploadDirectory()
     return render_template('index.html', page='index', login=isLoggedIn())
 
 
 @app.route('/usage')
 def usage():
+    deleteUploadDirectory()
     session.pop('_flashes', None)
-    # deleteUploadDirectory()
     return render_template('usage.html', page='usage', login=isLoggedIn())
 
 
 @app.route('/uploadAnswerKey')
 def upload_answer():
     if isLoggedIn():
-        # deleteUploadDirectory()
+        deleteUploadDirectory()
         createUploadDirectory()
         return render_template('uploadAnswerKey.html', login=isLoggedIn())
     else:
@@ -142,7 +157,10 @@ def upload_answer():
 @app.route('/completed')
 def completed():
     if isLoggedIn():
-        return render_template('completed.html', scores=session['SCORES'], answer_key=session['ANSWERS_STR'], login=isLoggedIn())
+        return render_template(
+            'completed.html', scores=session['SCORES'],
+            answer_key=session['ANSWERS_STR'],
+            login=isLoggedIn())
     else:
         flash('Bu işlemi gerçekleştirmek için giriş yapmalısınız!', 'error')
         return redirect(url_for('login'))
@@ -151,7 +169,9 @@ def completed():
 @app.route('/uploadPapers')
 def upload_form():
     if isLoggedIn():
-        return render_template('uploadPapers.html', answer_key=session['ANSWERS_STR'], login=isLoggedIn())
+        return render_template('uploadPapers.html',
+                               answer_key=session['ANSWERS_STR'],
+                               login=isLoggedIn())
     else:
         flash('Bu işlemi gerçekleştirmek için giriş yapmalısınız!', 'error')
         return redirect(url_for('login'))
@@ -171,7 +191,9 @@ def account():
                 operations[ind].append(datetime.fromtimestamp(
                     int(op[0])))
                 operations[ind].append(len(db.getRecordsById(op[0])))
-        return render_template('account.html', user=getUser(), operations=operations, page='account', login=isLoggedIn())
+        return render_template(
+            'account.html', user=getUser(),
+            operations=operations, page='account', login=isLoggedIn())
     else:
         flash('Bu işlemi gerçekleştirmek için giriş yapmalısınız!', 'error')
         return redirect(url_for('login'))
@@ -187,7 +209,10 @@ def detail():
         temp = db.getRecordsById(id)
         if temp is not None:
             records = list(temp)
-        return render_template('detail.html', user=getUser(), records=records, answer_key=answerKey, page='detail', login=isLoggedIn())
+        return render_template(
+            'detail.html', user=getUser(),
+            records=records, answer_key=answerKey, page='detail',
+            login=isLoggedIn())
     else:
         flash('Bu işlemi gerçekleştirmek için giriş yapmalısınız!', 'error')
         return redirect(url_for('login'))
@@ -225,12 +250,18 @@ def uploadAnswerKey():
                     ANSWERS_STR += (ANSWER_LETTERS[ans])
                 session['ANSWERS_STR'] = ANSWERS_STR
             else:
-                # deleteUploadDirectory()
-                flash('Yüklediğiniz dosya uzantısı desteklenmemektedir. Desteklenen dosya uzantılarını (.jpg .png .jpeg) kullanınız.', 'error')
+                deleteUploadDirectory()
+                flash(
+                    'Yüklediğiniz dosya uzantısı desteklenmemektedir. \
+                        Desteklenen dosya uzantılarını (.jpg .png .jpeg) \
+                            kullanınız.',
+                    'error')
                 return redirect(request.url)
-        except:
-            # deleteUploadDirectory()
-            flash('Yüklediğiniz cevap anahtarı standartlara uygun olmadığı için isteğiniz işlenemiyor. Lütfen standartlara uygun bir cevap anahtarı kullanınız.', 'error')
+        except Exception:
+            deleteUploadDirectory()
+            flash('Yüklediğiniz cevap anahtarı standartlara uygun olmadığı \
+                için isteğiniz işlenemiyor. Lütfen standartlara uygun bir \
+                    cevap anahtarı kullanınız.', 'error')
             return redirect(request.url)
         flash('Cevap anahtarı başarıyla yüklendi.', 'success')
         return redirect('/uploadPapers')
@@ -260,7 +291,9 @@ def uploadPapers():
                     temp.append(ANSWERS_STR)
 
                     result = omr.getScores(
-                        (session['UPLOAD_FOLDER'] + '/' + filename), session['ANSWER_KEY'], session['UPLOAD_FOLDER'])
+                        (session['UPLOAD_FOLDER'] + '/' + filename),
+                        session['ANSWER_KEY'],
+                        session['UPLOAD_FOLDER'])
                     temp.append(result[0])
                     print(result[1])
                     temp.append('static' + (result[1].split('static')[1]))
@@ -279,14 +312,25 @@ def uploadPapers():
                     """
                     db.addOperation(session['UPLOAD_FOLDER'], getUser()[
                         "email"], session['ANSWERS_STR'])
-                    db.addRecord(session['UPLOAD_FOLDER'], result[1], result[3],
-                                 result[4], result[5], result[0], ANSWERS_STR, result[2])
+                    db.addRecord(
+                        session['UPLOAD_FOLDER'],
+                        result[1],
+                        result[3],
+                        result[4],
+                        result[5],
+                        result[0],
+                        ANSWERS_STR, result[2])
                 else:
                     flash(
-                        'Yüklediğiniz dosya uzantısı desteklenmemektedir. Desteklenen dosya uzantılarını (.jpg .png .jpeg) kullanınız.', 'error')
+                        'Yüklediğiniz dosya uzantısı desteklenmemektedir. \
+                            Desteklenen dosya uzantılarını (.jpg .png .jpeg) \
+                                kullanınız.',
+                        'error')
                     return redirect(request.url)
-        except:
-            flash('Yüklediğiniz sınav kağıtlarının arasında standartlara uygun olmayanlar bulunduğu için isteğiniz işlenemiyor. Lütfen standartlara uygun kağıtları kullanınız.', 'error')
+        except Exception:
+            flash('Yüklediğiniz sınav kağıtlarının arasında standartlara uygun\
+                olmayanlar bulunduğu için isteğiniz işlenemiyor. Lütfen \
+                    standartlara uygun kağıtları kullanınız.', 'error')
             return redirect(request.url)
         session['SCORES'] = SCORES
         flash('Dosyalar başarıyla yüklendi.', 'success')
@@ -298,4 +342,4 @@ def uploadPapers():
 
 if __name__ == "__main__":
     # app.run(host='0.0.0.0', port=5000, debug=False, threaded=True)
-    app.run(host='0.0.0.0', port=80, debug=False, threaded=True)
+    app.run(host='0.0.0.0', port=8080, debug=False, threaded=True)

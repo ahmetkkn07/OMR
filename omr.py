@@ -3,11 +3,9 @@ from imutils import contours
 import numpy as np
 import imutils
 import cv2
-import argparse
 import math
 import statistics as stats
 import os
-from werkzeug.utils import secure_filename
 
 gray = None
 
@@ -51,7 +49,6 @@ def getAnswers(img):
     maxArea = 0
     index = 0
     rects = []
-    counter = 0
     if len(cnts) > 0:
         cnts = sorted(cnts, key=cv2.contourArea, reverse=True)
         for cnt in cnts:
@@ -74,8 +71,8 @@ def getAnswers(img):
         nameField = four_point_transform(gray, nameRect.reshape(4, 2))
         topOfBubbles = nameRect.reshape(1, 8)[0][5]
         thresh = thresh[topOfBubbles:, :]
-    except:
-        pass
+    except Exception as e:
+        print(e)
 
     cnts = cv2.findContours(
         thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -131,10 +128,10 @@ def getAnswers(img):
         if bubbledCount == 1:
             ANSWERS.append(bubbled)
         elif bubbledCount == 0:
-            #! 5 boş
+            # ! 5 boş
             ANSWERS.append(5)
         else:
-            #! 6 birden çok cevap
+            # ! 6 birden çok cevap
             ANSWERS.append(6)
     return ANSWERS.copy()
 
@@ -145,13 +142,15 @@ def getScores(img, ANSWER_KEY, UPLOAD_FOLDER):
     Args:
         img (string): path of the image
         ANSWER_KEY (list): answer key of the image
-        UPLOAD_FOLDER (string): full string folder under static/uploads/[timestamp]
+        UPLOAD_FOLDER (string): full string folder under
+        static/uploads/[timestamp]
 
     Raises:
         Exception: catches all exception types
 
     Returns:
-        list: score, image of name field, image of bubbled correct and wrong answers, correct, wrong, empty
+        list: score, image of name field, image of bubbled correct and wrong
+        answers, correct, wrong, empty
     """
     image = cv2.imread(img)
 
@@ -189,7 +188,7 @@ def getScores(img, ANSWER_KEY, UPLOAD_FOLDER):
     try:
         nameRect = rects[index]
         nameField = four_point_transform(gray, nameRect.reshape(4, 2))
-    except:
+    except Exception:
         raise Exception
 
     kernel = np.ones((1, 1))
@@ -278,7 +277,7 @@ def getScores(img, ANSWER_KEY, UPLOAD_FOLDER):
             color = redColor
         if answer <= 4:
             cv2.drawContours(paper, [cnts[answer]], -1, color, 3)
-            cv2.imwrite(os.getcwd()+"/"+str(qNum)+str(i)+"image.jpg", paper)
+            # cv2.imwrite(os.getcwd()+"/"+str(qNum)+str(i)+"image.jpg", paper)
 
     constant = 100.0 / len(ANSWER_KEY)
     score = correct * constant
