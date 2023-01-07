@@ -1,6 +1,6 @@
 flask
 imutils
-numpy==1.19.3
+numpy==1.22.0
 opencv-python
 scipy
 flask_fontawesome
